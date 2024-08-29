@@ -14,6 +14,7 @@ const LoginScreen = ({ navigation }) => {
         password,
       });
       setMessage('Login Successful');
+      navigation.navigate('Home');
     } catch (error) {
       setMessage('Error Logging In');
     }
