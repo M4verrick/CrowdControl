@@ -15,7 +15,7 @@ const SignUpScreen = () => {
     }
 
     try {
-      const response = await axios.post('http://192.168.1.126:8000/signup', { // Replace 'localhost' with your IP address
+      const response = await axios.post('http://192.168.1.126:8000/signup', { 
         username,
         password,
       });

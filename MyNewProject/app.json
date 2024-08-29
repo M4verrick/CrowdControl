@@ -1,0 +1,10 @@
+{
+    "expo": {
+      "ios": {
+        "config": {
+          "googleMapsApiKey": "AIzaSyC8sloSAcrF5iGRmvgbID5EozVzDZVvICU"
+        }
+      }
+    }
+  }
+  
