@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, Image } from 'react-native';
+import NavBar from '../components/navbar';
 
 const HomeScreen = ({ navigation }) => {
   return (
@@ -11,20 +12,8 @@ const HomeScreen = ({ navigation }) => {
         <Image source={require('../assets/cover3.png')} style={styles.eventImage} />
       </ScrollView>
 
-      {/* Navigation Bar */}
-      <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navItem} onPress={() => console.log('Other Tab')}>
-          {/* Placeholder for other tabs */}
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Tickets')}>
-          <Image source={require('../assets/Vector.png')} style={{ width: 30, height: 30 }} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.navItem} onPress={() => console.log('Other Tab')}>
-          {/* Placeholder for other tabs */}
-        </TouchableOpacity>
-      </View>
+     
+      <NavBar navigation={navigation} />  
     </View>
   );
 };
@@ -40,22 +29,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   eventImage: {
-    marginHorizontal: 10,
     width: 300,
     height: 200,
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 60,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-  },
-  navItem: {
-    flex: 1,
-    alignItems: 'center',
+    marginHorizontal: 10,
   },
 });
 
