@@ -1,88 +1,83 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import axios from 'axios';
 
-export default function SignupScreen({ navigation }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+const SignUpScreen = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-    const handleSignup = () => {
-        if (password !== confirmPassword) {
-            alert('Passwords do not match');
-            return;
-        }
-        fetch('http://localhost:8000/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message === 'User registered successfully') {
-                    navigation.navigate('Login');
-                } else {
-                    alert('Signup failed');
-                }
-            });
-    };
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry
-            />
-            <Button title="Sign Up" onPress={handleSignup} />
-            <Text
-                style={styles.link}
-                onPress={() => navigation.navigate('Login')}
-            >
-                Already have an account? Login
-            </Text>
-        </View>
-    );
-}
+    try {
+      const response = await axios.post('http://192.168.1.126:8000/signup', { // Replace 'localhost' with your IP address
+        username,
+        password,
+      });
+      setMessage('Sign Up Successful');
+    } catch (error) {
+      setMessage('Error Signing Up');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+      />
+      <Button title="Sign Up" onPress={handleSignUp} />
+      {message ? <Text style={styles.message}>{message}</Text> : null}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 20,
-    },
-    input: {
-        width: '80%',
-        padding: 10,
-        marginVertical: 10,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-    },
-    link: {
-        marginTop: 20,
-        color: '#007BFF',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 24,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+  },
+  message: {
+    marginTop: 20,
+    color: 'red',
+  },
 });
+
+export default SignUpScreen;

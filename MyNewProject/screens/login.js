@@ -1,77 +1,79 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
-export default function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const LoginScreen = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-    const handleLogin = () => {
-        fetch('http://localhost:8000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message === 'Login successful') {
-                    // Navigate to the home screen
-                    navigation.navigate('Home');
-                } else {
-                    alert('Invalid username or password');
-                }
-            });
-    };
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.1.126:8000/login', {  // Replace 'localhost' with your IP address
+        username,
+        password,
+      });
+      setMessage('Login Successful');
+    } catch (error) {
+      setMessage('Error Logging In');
+    }
+  };
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <Button title="Login" onPress={handleLogin} />
-            <Text
-                style={styles.link}
-                onPress={() => navigation.navigate('Signup')}
-            >
-                Don't have an account? Sign up
-            </Text>
-        </View>
-    );
-}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <Button title="Login" onPress={handleLogin} />
+      {message ? <Text style={styles.message}>{message}</Text> : null}
+
+      {/* TouchableOpacity for navigating to the SignUp screen */}
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.switchText}>Don't have an account? Sign Up</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 20,
-    },
-    input: {
-        width: '80%',
-        padding: 10,
-        marginVertical: 10,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-    },
-    link: {
-        marginTop: 20,
-        color: '#007BFF',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 24,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+  },
+  message: {
+    marginTop: 20,
+    color: 'red',
+  },
+  switchText: {
+    marginTop: 20,
+    color: '#1E90FF',
+  },
 });
+
+export default LoginScreen;
