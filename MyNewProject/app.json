@@ -1,10 +1,15 @@
 {
-    "expo": {
-      "ios": {
-        "config": {
-          "googleMapsApiKey": "AIzaSyC8sloSAcrF5iGRmvgbID5EozVzDZVvICU"
-        }
+  "expo": {
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyC8sloSAcrF5iGRmvgbID5EozVzDZVvICU"
       }
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "091b008c-3507-4729-9697-818bdf7422ea"
+      }
+    },
+    "owner": "maverickgoldendragon"
   }
-  
+}
