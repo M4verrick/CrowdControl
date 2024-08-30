@@ -16,28 +16,28 @@ const TicketsScreen = ({ navigation }) => {
       id: 1,
       event: "Concert A",
       date: "2024-09-15",
-      location: "Venue A",
+      location: "STANDING PEN A",
       venueId: "A",
     },
     {
       id: 2,
       event: "Festival B",
       date: "2024-09-20",
-      location: "Venue B",
+      location: "STANDING PEN B",
       venueId: "B",
     },
     {
       id: 3,
       event: "Theater C",
       date: "2024-09-25",
-      location: "Venue C",
+      location: "STANDING PEN C",
       venueId: "C",
     },
     {
       id: 4,
       event: "Exhibition D",
       date: "2024-09-30",
-      location: "Venue D",
+      location: "STANDING PEN D",
       venueId: "D",
     },
   ];
@@ -93,8 +93,8 @@ const TicketsScreen = ({ navigation }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Venue Map</Text>
-            <AllVenuesMap currentVenue={currentVenue} />
+            <Text style={styles.modalTitle}>Stadium Map</Text>
+            <StadiumMap currentVenue={currentVenue} />
             <Button title="Close" onPress={closeModal} />
           </View>
         </View>
@@ -105,24 +105,55 @@ const TicketsScreen = ({ navigation }) => {
   );
 };
 
-// All Venues Map Component
-const AllVenuesMap = ({ currentVenue }) => {
+// Stadium Map Component
+const StadiumMap = ({ currentVenue }) => {
   return (
-    <View style={styles.allVenuesMap}>
-      {["A", "B", "C", "D"].map((venueId) => (
-        <View
-          key={venueId}
-          style={[
-            styles.venueMap,
-            currentVenue === venueId && styles.highlightedVenue,
-          ]}
-        >
-          <Text style={styles.venueLabel}>Venue {venueId}</Text>
-          <View style={styles.emergencyExit}>
-            <Text style={styles.exitText}>Exit</Text>
-          </View>
+    <View style={styles.stadiumMapContainer}>
+      <View style={styles.stage}>
+        <Text style={styles.stageLabel}>Stage</Text>
+      </View>
+      <View style={styles.seatingContainer}>
+        <View style={styles.row}>
+          <SeatingBlock
+            section="A"
+            highlighted={currentVenue === "A"}
+            exitPosition="bottom-left"
+          />
+          <SeatingBlock
+            section="B"
+            highlighted={currentVenue === "B"}
+            exitPosition="bottom-right"
+          />
         </View>
-      ))}
+        <View style={styles.row}>
+          <SeatingBlock
+            section="C"
+            highlighted={currentVenue === "C"}
+            exitPosition="top-left"
+          />
+          <SeatingBlock
+            section="D"
+            highlighted={currentVenue === "D"}
+            exitPosition="top-right"
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const SeatingBlock = ({ section, highlighted, exitPosition }) => {
+  return (
+    <View
+      style={[
+        styles.seatingBlock,
+        { backgroundColor: highlighted ? "#FFD700" : "#D3D3D3" }, // Yellow for highlighted, grey for default
+      ]}
+    >
+      <Text style={styles.seatingLabel}>{section}</Text>
+      <View style={[styles.emergencyExit, styles[exitPosition]]}>
+        <Text style={styles.exitText}>Exit</Text>
+      </View>
     </View>
   );
 };
@@ -194,41 +225,76 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
   },
-  allVenuesMap: {
-    width: "100%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
-  venueMap: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#ddd",
-    borderRadius: 10,
+  stadiumMapContainer: {
+    width: 300,
+    height: 300,
+    position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
+  },
+  stage: {
+    width: 200,
+    height: 50,
+    backgroundColor: "#333",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    zIndex: 1,
+  },
+  stageLabel: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  seatingContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+  seatingBlock: {
+    width: 100,
+    height: 70,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
     position: "relative",
   },
-  highlightedVenue: {
-    backgroundColor: "#FFD700",
-  },
-  venueLabel: {
-    fontSize: 16,
+  seatingLabel: {
+    color: "#000",
     fontWeight: "bold",
-    color: "#333",
   },
   emergencyExit: {
     position: "absolute",
-    bottom: 10,
-    right: 10,
     backgroundColor: "#ff3333",
     padding: 4,
     borderRadius: 3,
   },
   exitText: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: 10,
+  },
+  "bottom-left": {
+    bottom: 5,
+    left: 5,
+  },
+  "bottom-right": {
+    bottom: 5,
+    right: 5,
+  },
+  "top-left": {
+    top: 5,
+    left: 5,
+  },
+  "top-right": {
+    top: 5,
+    right: 5,
   },
 });
 
