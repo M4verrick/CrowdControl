@@ -10,7 +10,7 @@ import registerNNPushToken from "native-notify";
 const Stack = createStackNavigator();
 
 export default function App() {
-  registerNNPushToken(23299, "U5IjQWTJDK4k4DjbwcF0B4");
+  registerNNPushToken(23302, "F6oLD1cYGCyON859qtd1Wx");
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">

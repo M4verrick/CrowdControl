@@ -8,28 +8,25 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleLogin = useCallback(() => {
-    const hardcodedUsername = "John";
-    const hardcodedPassword = "HelloWorld";
-
-    if (username === hardcodedUsername && password === hardcodedPassword) {
-      setMessage("Login Successful");
-
-      // Reset the navigation stack and navigate to Home
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Home" }],
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.1.126:8000/login', {  // Replace 'localhost' with your IP address
+        username,
+        password,
       });
-    } else {
-      setMessage("Invalid Username or Password");
+      setMessage('Login Successful');
+      navigation.navigate('Home');
+    } catch (error) {
+      setMessage('Error Logging In');
     }
-  }, [username, password, navigation]);
+  };
 
   return (
     <KeyboardAvoidingView
