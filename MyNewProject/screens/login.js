@@ -16,6 +16,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+
   const { setUser } = useContext(UserContext); // Use the context to set the user
 
   // Fetch the API URL from environment variables
@@ -85,69 +86,108 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1e1e1e",
-    justifyContent: "center",
   },
-  innerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 32,
+  searchContainer: {
+    padding: 16,
+    backgroundColor: "#333",
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
   },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#888",
-    marginBottom: 32,
-  },
-  input: {
-    width: "100%",
-    height: 48,
+  searchInput: {
     backgroundColor: "#444",
-    borderColor: "#666",
-    borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 16,
-    paddingHorizontal: 16,
-    fontSize: 16,
+    padding: 10,
     color: "#fff",
+    fontSize: 16,
   },
-  button: {
+  scrollView: {
+    padding: 16,
+  },
+  eventCard: {
+    backgroundColor: "#222",
+    borderRadius: 10,
+    marginBottom: 20,
+    overflow: "hidden",
+  },
+  eventImage: {
     width: "100%",
-    height: 48,
-    backgroundColor: "#ff4500",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 16,
+    height: 180,
   },
-  buttonText: {
+  eventDetails: {
+    padding: 16,
+  },
+  eventTitle: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
-  message: {
-    marginTop: 20,
-    color: "red",
-    fontSize: 16,
+  eventDate: {
+    color: "#888",
+    marginTop: 5,
+    fontSize: 14,
   },
-  signupContainer: {
-    flexDirection: "row",
-    marginTop: 32,
+  eventLocation: {
+    color: "#888",
+    marginTop: 2,
+    fontSize: 14,
   },
-  signupText: {
+  eventDescription: {
+    color: "#aaa",
+    marginTop: 10,
+    fontSize: 14,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.8)",
+  },
+  modalContent: {
+    width: 350,
+    backgroundColor: "#1e1e1e",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  modalImage: {
+    width: "100%",
+    height: 200,
+    marginBottom: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalDate: {
     color: "#888",
     fontSize: 16,
+    marginBottom: 5,
   },
-  signupLink: {
-    color: "#ff4500",
+  modalLocation: {
+    color: "#888",
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalDescription: {
+    color: "#aaa",
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  purchaseButton: {
+    backgroundColor: "#ff4500",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    marginBottom: 20,
+  },
+  purchaseButtonText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
 });
-
 export default LoginScreen;
