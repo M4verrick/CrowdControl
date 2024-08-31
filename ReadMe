@@ -1,3 +1,66 @@
+Crowd Sync
+Problem statement: During large events, such as concerts or sporting events, there have been cases of mismanagement or lack of coordination in preventing people from overcrowding in a single location, which can lead to a crowd crush, potentially causing mass injury or deaths.
+
+Proposed solution: Using our app, Crowd Sync, we are able to locate users present at the venue, using that information and the layout of the venue, during times of emergency or when the organizer needs participants to disperse, we can segment the crowd into smaller groups, individually redirect them to where they can exit from or whether they need to stay still and wait for further instructions on where to move. This will allow for efficient movement of people and will minimize confusion and crowding.
+
+Key features:
+-           GPS functionality to detect users’ location, user’s location is tracked only after they redeemed the ticket at the event so as to not invade the user’s privacy when not at a major event.
+
+-            When users buy a ticket to an event, they can redeem their ticket on Crowd Sync, which ties their ticket to their account. The tied ticket will assign them a sector based on the location of their seat and when the organizer needs the participants to disperse, the app will show the user which sector they should move to on what the user should do based on their seats and location, for example to sit and wait or to move to the nearby exit.
+
+-            During emergencies, the app will continuously send push notifications in order to attract the user’s attention in order to redirect them to a safer location.
+
+-            Log in, sign up and forget password for user accounts.
+
+-        The app will continuously send notifications to the user if the user is outside the designated sector that they should be in, and if the user re-enters the designated sector they will be informed of it.
+
+-            Organizers are also able to send custom messages to participants, which can be used for informing participants during emergency situations.
+
+Unique Selling Points of Crowd Sync
+
+Integration with Ticketing Systems:
+
+Personalized Experience: Crowd Sync ties the user's ticket to their account, allowing the app to know exactly the location of each participant based on their seat. This personalized approach makes sures that instructions are tailored to the user’s specific sector within the venue.
+
+Sector-Based Instructions: By assigning users to specific sectors, the app can provide highly targeted instructions, such as guiding users to nearby exits or instructing them to remain seated. This sector-based approach minimizes confusion and streamlines the evacuation process.
+
+Real-Time GPS Functionality:
+
+Precise Location Tracking: Crowd Sync uses real-time GPS to track the exact location of users within the venue. This allows for dynamic responses based on the real-time distribution of people.
+
+Adaptive Guidance: Crowd Sync adjusts its instructions based on users' real-time positions, ensuring that guidance is always relevant and effective.
+
+Emergency Push Notifications:
+
+Instant Attention: During emergencies, Crowd Sync sends continuous push notifications to capture users' attention and provide immediate instructions. When the user exits the designated area they are assigned to, push notifications will constantly sound off. This feature is crucial for ensuring that users receive and act on emergency directives promptly.
+
+High Visibility: The use of persistent notifications helps ensure that messages are seen even if the app is not actively in use, increasing the likelihood of a successful evacuation or response.
+
+Custom Messaging for Organizers:
+
+Direct Communication: Organizers can send custom messages to participants, which is a step beyond generic alerts. This feature allows for tailored instructions and updates, which can be critical during evolving situations.
+
+Flexible Messaging: Customizable messages enable organizers to provide specific instructions or updates based on the unfolding scenario, enhancing overall communication efficiency.
+
+User Account Management:
+
+Seamless Access: Features such as log in, sign up, and password recovery ensure that users have a smooth experience accessing their accounts and redeeming tickets.
+
+Secure and Personalized: Account management allows for secure handling of user data and personalized interactions based on ticket information.
+
+Efficient Crowd Segmentation:
+
+Pre-Event Segmentation: By using the ticket seating information to segment the crowd before an emergency occurs, the app can create a preemptive strategy for managing crowd movement, rather than reacting to the situation after it has escalated.
+
+Strategic Guidance: This proactive approach to crowd management helps prevent overcrowding at critical points, such as exits, by dispersing people strategically across various routes.
+
+Comparison to Other Apps:
+
+General crowd control apps may not offer the same level of precision in location-based instructions or may rely on broad, non-personalized alerts. Crowd Sync stands out by leveraging detailed ticket data and real-time GPS to provide highly specific guidance.
+
+Emergency alert systems often focus on sending out broad notifications without taking into account the user's exact location. Crowd Sync enhances this by integrating GPS tracking and sector-specific instructions for more effective crowd management.
+Overall, Crowd Sync differentiates itself with its advanced integration of ticketing, real-time GPS tracking, personalized instructions, and customizable messaging, making it a robust solution for enhancing safety and efficiency during large events.
+
 ## User Flow
 1) Create an account by signing up with an user name and password.
 2) Login into the application with your user name and password.
