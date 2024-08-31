@@ -1,0 +1,12 @@
+## User Flow
+1) Create an account by signing up with an user name and password.
+2) Login into the application with your user name and password.
+3) To simulate sending of notifications (such as emergencies), we are using this website to send them: https://app.nativenotify.com/in-app.
+4) Upon signing in, user can see what events are available to them. They can search what events are available to them as well.
+5) User will redeem the ticket whenever they check into an event. Right now the ticket is hard-coded to showcase our idea, but that will be rectified in the future.
+6) Once redeemed, user will be shown where his/her sector is. At the moment, due to time constraint, the sectors are hardcoded with Google maps API (i.e SMU SOE, SOB and PSR). Polygon shapes are drawn over these sectors and user's location will
+be tracked by the application.
+7) When the user has successfully reached the sector he/she is supposed to be at, 
+a notification of acklowdegement will be sent to the user. We are using Expo Notif to achieve this functionality.
+8) The application will continuosly track the location of the user. If the user is not at where he/she is supposed to be, it will constantly ping the user. At the moment background tracking is not possible with Expo
+but if given a chance we will implement these extra features.
