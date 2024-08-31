@@ -1,85 +1,51 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 export default function MapScreen() {
-  // Hardcoded location: A specific seat in Michigan Stadium ("The Big House")
-  const [location] = useState({
-    latitude: 42.2658, // Approximate center of the stadium
-    longitude: -83.7486,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
-  });
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  // Specific seats and exits within Michigan Stadium (approximate coordinates)
-  const seats = [
-    { latitude: 42.2662, longitude: -83.749, title: "Seat A - Section 1" },
-  ];
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
 
-  // Nearest exits (approximate coordinates)
-  const exits = [
-    { latitude: 42.26645, longitude: -83.748237, title: "Exit A - Section 1" },
-    { latitude: 42.265123, longitude: -83.749998, title: "Exit B - Section 3" },
-    { latitude: 42.266016, longitude: -83.750546, title: "Exit C - Section 4" },
-  ];
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    })();
+  }, []);
+
+  if (errorMsg) {
+    return <View style={styles.container}><Text>{errorMsg}</Text></View>;
+  }
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={location}
-        showsUserLocation={false} // We will add a custom marker instead
-        provider={MapView.PROVIDER_GOOGLE} // Use Google Maps
-      >
-        {/* Mark the specific seat in the stadium */}
-        {seats.map((seat, index) => (
+      {location ? (
+        <MapView
+          style={styles.map}
+          initialRegion={location}
+          showsUserLocation={true}
+          provider={MapView.PROVIDER_GOOGLE}  // Use Google Maps
+        >
           <Marker
-            key={index}
-            coordinate={{ latitude: seat.latitude, longitude: seat.longitude }}
-            title={seat.title}
-          >
-            <Image
-              source={require("../assets/location-icon.png")} // Your custom location icon
-              style={{ width: 30, height: 30 }}
-              resizeMode="contain"
-            />
-          </Marker>
-        ))}
-
-        {/* Mark the exits */}
-        {exits.map((exit, index) => (
-          <Marker
-            key={index}
-            coordinate={{ latitude: exit.latitude, longitude: exit.longitude }}
-            title={exit.title}
-          >
-            <Image
-              source={require("../assets/exit-icon.png")} // Your custom exit icon
-              style={{ width: 30, height: 30 }}
-              resizeMode="contain"
-            />
-          </Marker>
-        ))}
-
-        {/* Optionally, draw lines from each seat to its nearest exit */}
-        {seats.map((seat, index) => {
-          const nearestExit = exits[0]; // Assuming nearest exit is Exit A for simplicity
-          return (
-            <Polyline
-              key={index}
-              coordinates={[
-                { latitude: seat.latitude, longitude: seat.longitude },
-                {
-                  latitude: nearestExit.latitude,
-                  longitude: nearestExit.longitude,
-                },
-              ]}
-              strokeColor="#FF0000" // Red line
-              strokeWidth={2}
-            />
-          );
-        })}
-      </MapView>
+            coordinate={location}
+            title={"You are here"}
+          />
+        </MapView>
+      ) : (
+        <Text>Loading map...</Text>
+      )}
     </View>
   );
 }
@@ -87,11 +53,11 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   map: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 });
