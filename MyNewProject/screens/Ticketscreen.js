@@ -14,42 +14,27 @@ const TicketsScreen = ({ navigation }) => {
   const tickets = [
     {
       id: 1,
-      event: "Concert A",
+      event: "SMU HALLOWEEN EVENT",
       date: "2024-09-15",
-      location: "STANDING PEN A",
+      location: "SOL, PSR, SOB",
       venueId: "A",
-    },
-    {
-      id: 2,
-      event: "Festival B",
-      date: "2024-09-20",
-      location: "STANDING PEN B",
-      venueId: "B",
-    },
-    {
-      id: 3,
-      event: "Theater C",
-      date: "2024-09-25",
-      location: "STANDING PEN C",
-      venueId: "C",
-    },
-    {
-      id: 4,
-      event: "Exhibition D",
-      date: "2024-09-30",
-      location: "STANDING PEN D",
-      venueId: "D",
     },
   ];
 
   const [redeemedTickets, setRedeemedTickets] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentVenue, setCurrentVenue] = useState(null);
+  const [isTicketRedeemed, setIsTicketRedeemed] = useState(false);
 
-  const handleRedeem = (id, venueId) => {
+  const handleRedeem = (id, venueId, event) => {
     setRedeemedTickets([...redeemedTickets, { id, venueId }]);
-    setCurrentVenue(venueId);
-    setModalVisible(true); // Show the map modal
+    setIsTicketRedeemed(true);  // Mark the ticket as redeemed
+    if (event === "SMU HALLOWEEN EVENT") {
+      navigation.navigate("Map", { venueId, event });
+    } else {
+      setCurrentVenue(venueId);
+      setModalVisible(true); // Show the map modal for other events (currently not used)
+    }
   };
 
   const closeModal = () => {
@@ -70,7 +55,7 @@ const TicketsScreen = ({ navigation }) => {
                 redeemedTickets.some((redeemed) => redeemed.id === ticket.id) &&
                   styles.redeemedButton,
               ]}
-              onPress={() => handleRedeem(ticket.id, ticket.venueId)}
+              onPress={() => handleRedeem(ticket.id, ticket.venueId, ticket.event)}
               disabled={redeemedTickets.some(
                 (redeemed) => redeemed.id === ticket.id
               )}
@@ -100,12 +85,13 @@ const TicketsScreen = ({ navigation }) => {
         </View>
       </Modal>
 
-      <NavBar navigation={navigation} />
+      {/* Pass the isTicketRedeemed state to NavBar */}
+      <NavBar navigation={navigation} isTicketRedeemed={isTicketRedeemed} />
     </View>
   );
 };
 
-// Stadium Map Component
+// Stadium Map Component (optional - if needed in the modal)
 const StadiumMap = ({ currentVenue }) => {
   return (
     <View style={styles.stadiumMapContainer}>
@@ -118,23 +104,6 @@ const StadiumMap = ({ currentVenue }) => {
             section="A"
             highlighted={currentVenue === "A"}
             exitPosition="bottom-left"
-          />
-          <SeatingBlock
-            section="B"
-            highlighted={currentVenue === "B"}
-            exitPosition="bottom-right"
-          />
-        </View>
-        <View style={styles.row}>
-          <SeatingBlock
-            section="C"
-            highlighted={currentVenue === "C"}
-            exitPosition="top-left"
-          />
-          <SeatingBlock
-            section="D"
-            highlighted={currentVenue === "D"}
-            exitPosition="top-right"
           />
         </View>
       </View>
@@ -283,18 +252,6 @@ const styles = StyleSheet.create({
   "bottom-left": {
     bottom: 5,
     left: 5,
-  },
-  "bottom-right": {
-    bottom: 5,
-    right: 5,
-  },
-  "top-left": {
-    top: 5,
-    left: 5,
-  },
-  "top-right": {
-    top: 5,
-    right: 5,
   },
 });
 

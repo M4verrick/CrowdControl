@@ -1,7 +1,15 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 
-const NavBar = ({ navigation }) => {
+const NavBar = ({ navigation, isTicketRedeemed }) => {
+  const handleMapNavigation = () => {
+    if (isTicketRedeemed) {
+      navigation.navigate('Map');
+    } else {
+      Alert.alert('Access Denied', 'You must redeem your ticket to access the map.');
+    }
+  };
+
   return (
     <View style={styles.navBar}>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
@@ -12,7 +20,7 @@ const NavBar = ({ navigation }) => {
         <Image source={require('../assets/Vector.png')} style={styles.icon} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Map')}>
+      <TouchableOpacity style={styles.navItem} onPress={handleMapNavigation}>
         <Image source={require('../assets/map.png')} style={styles.icon} />
       </TouchableOpacity>
     </View>
