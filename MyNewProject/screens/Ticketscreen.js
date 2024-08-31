@@ -157,110 +157,129 @@ const SeatingBlock = ({ section, highlighted, exitPosition }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#1e1e1e",
-  },
-  searchContainer: {
     padding: 16,
-    backgroundColor: "#333",
-    borderBottomWidth: 1,
-    borderBottomColor: "#444",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  searchInput: {
-    backgroundColor: "#444",
-    borderRadius: 8,
-    padding: 10,
-    color: "#fff",
-    fontSize: 16,
-  },
-  scrollView: {
-    padding: 16,
-  },
-  eventCard: {
-    backgroundColor: "#222",
-    borderRadius: 10,
-    marginBottom: 20,
-    overflow: "hidden",
-  },
-  eventImage: {
+  ticketContainer: {
     width: "100%",
-    height: 180,
-  },
-  eventDetails: {
     padding: 16,
+    marginVertical: 8,
+    borderRadius: 10,
+    backgroundColor: "#f9f9f9",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
   },
-  eventTitle: {
-    color: "#fff",
+  eventText: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 8,
   },
-  eventDate: {
-    color: "#888",
-    marginTop: 5,
+  detailsText: {
     fontSize: 14,
+    color: "#555",
+    marginBottom: 4,
   },
-  eventLocation: {
-    color: "#888",
-    marginTop: 2,
-    fontSize: 14,
-  },
-  eventDescription: {
-    color: "#aaa",
+  claimButton: {
     marginTop: 10,
-    fontSize: 14,
+    paddingVertical: 10,
+    borderRadius: 5,
+    backgroundColor: "#1E90FF",
+    alignItems: "center",
+  },
+  redeemedButton: {
+    backgroundColor: "#32CD32",
+  },
+  claimButtonText: {
+    color: "#fff",
+    fontSize: 16,
   },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalContent: {
     width: 350,
-    backgroundColor: "#1e1e1e",
-    borderRadius: 10,
     padding: 20,
-    alignItems: "center",
-  },
-  modalImage: {
-    width: "100%",
-    height: 200,
-    marginBottom: 20,
+    backgroundColor: "#fff",
     borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   modalTitle: {
-    color: "#fff",
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 16,
   },
-  modalDate: {
-    color: "#888",
-    fontSize: 16,
-    marginBottom: 5,
+  stadiumMapContainer: {
+    width: 300,
+    height: 300,
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  modalLocation: {
-    color: "#888",
-    fontSize: 16,
-    marginBottom: 10,
+  stage: {
+    width: 200,
+    height: 50,
+    backgroundColor: "#333",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    zIndex: 1,
   },
-  modalDescription: {
-    color: "#aaa",
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 20,
+  stageLabel: {
+    color: "#fff",
+    fontWeight: "bold",
   },
-  purchaseButton: {
-    backgroundColor: "#ff4500",
+  seatingContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+  seatingBlock: {
+    width: 100,
+    height: 70,
     borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
+    position: "relative",
   },
-  purchaseButtonText: {
-    color: "#fff",
-    fontSize: 16,
+  seatingLabel: {
+    color: "#000",
     fontWeight: "bold",
+  },
+  emergencyExit: {
+    position: "absolute",
+    backgroundColor: "#ff3333",
+    padding: 4,
+    borderRadius: 3,
+  },
+  exitText: {
+    color: "#fff",
+    fontSize: 10,
+  },
+  "bottom-left": {
+    bottom: 5,
+    left: 5,
   },
 });
 

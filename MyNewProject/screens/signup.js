@@ -60,109 +60,26 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1e1e1e",
-  },
-  searchContainer: {
-    padding: 16,
-    backgroundColor: "#333",
-    borderBottomWidth: 1,
-    borderBottomColor: "#444",
-  },
-  searchInput: {
-    backgroundColor: "#444",
-    borderRadius: 8,
-    padding: 10,
-    color: "#fff",
-    fontSize: 16,
-  },
-  scrollView: {
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
   },
-  eventCard: {
-    backgroundColor: "#222",
-    borderRadius: 10,
-    marginBottom: 20,
-    overflow: "hidden",
+  title: {
+    fontSize: 24,
+    marginBottom: 24,
   },
-  eventImage: {
-    width: "100%",
-    height: 180,
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
   },
-  eventDetails: {
-    padding: 16,
-  },
-  eventTitle: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  eventDate: {
-    color: "#888",
-    marginTop: 5,
-    fontSize: 14,
-  },
-  eventLocation: {
-    color: "#888",
-    marginTop: 2,
-    fontSize: 14,
-  },
-  eventDescription: {
-    color: "#aaa",
-    marginTop: 10,
-    fontSize: 14,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.8)",
-  },
-  modalContent: {
-    width: 350,
-    backgroundColor: "#1e1e1e",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
-  },
-  modalImage: {
-    width: "100%",
-    height: 200,
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  modalTitle: {
-    color: "#fff",
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  modalDate: {
-    color: "#888",
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  modalLocation: {
-    color: "#888",
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  modalDescription: {
-    color: "#aaa",
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  purchaseButton: {
-    backgroundColor: "#ff4500",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    marginBottom: 20,
-  },
-  purchaseButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+  message: {
+    marginTop: 20,
+    color: 'red',
   },
 });
 
