@@ -13,15 +13,15 @@ const NavBar = ({ navigation, isTicketRedeemed }) => {
   return (
     <View style={styles.navBar}>
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
-        <Image source={require('../assets/home.png')} style={styles.icon} />
+        <Image source={require('../assets/pic1.webp')} style={styles.icon} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Tickets')}>
-        <Image source={require('../assets/Vector.png')} style={styles.icon} />
+        <Image source={require('../assets/pic2.webp')} style={styles.icon} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.navItem} onPress={handleMapNavigation}>
-        <Image source={require('../assets/map.png')} style={styles.icon} />
+        <Image source={require('../assets/pic3.webp')} style={styles.icon} />
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 60,
-    backgroundColor: '#fff',
+    backgroundColor: '#C3C7CA',
     borderTopWidth: 1,
     borderTopColor: '#ddd',
   },
