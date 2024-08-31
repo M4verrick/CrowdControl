@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
+import BackgroundLayout from '../components/BackgroundLayout'; // Adjust the path if necessary
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.1.126:8000/login', {  
+      const response = await axios.post('http://192.168.68.103:8081/login', {  
         username,
         password,
       });
@@ -29,50 +30,52 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
-    >
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Sign in to continue</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor="#aaa"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#aaa"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        {message ? <Text style={styles.message}>{message}</Text> : null}
+    <BackgroundLayout>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
+      >
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Sign in to continue</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            placeholderTextColor="#aaa"
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#aaa"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          {message ? <Text style={styles.message}>{message}</Text> : null}
 
-        <TouchableOpacity
-          style={styles.signupContainer}
-          onPress={() => navigation.navigate("Signup")}
-        >
-          <Text style={styles.signupText}>Don't have an account?</Text>
-          <Text style={styles.signupLink}> Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          <TouchableOpacity
+            style={styles.signupContainer}
+            onPress={() => navigation.navigate("Signup")}
+          >
+            <Text style={styles.signupText}>Don't have an account?</Text>
+            <Text style={styles.signupLink}> Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </BackgroundLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "transparent",
   },
   innerContainer: {
     flex: 1,
@@ -138,3 +141,4 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+
