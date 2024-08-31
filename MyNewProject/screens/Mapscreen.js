@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
+import * as Notifications from 'expo-notifications';
+import { UserContext } from './usercontext';
 import axios from 'axios';
-import { UserContext } from './usercontext'; // Import UserContext to get the username
 
+// Define sectors
 const SMUSectors = {
   economics: [
     { latitude: 1.2984863090170073, longitude: 103.84871824598132 }, // Point 1
@@ -26,14 +28,41 @@ const SMUSectors = {
   ],
 };
 
+// Helper function to check if a point is inside a polygon
+const isPointInPolygon = (point, polygon) => {
+  let isInside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i].latitude;
+    const yi = polygon[i].longitude;
+    const xj = polygon[j].latitude;
+    const yj = polygon[j].longitude;
+
+    const intersect = ((yi > point.longitude) !== (yj > point.longitude)) &&
+                      (point.latitude < (xj - xi) * (point.longitude - yi) / (yj - yi) + xi);
+    if (intersect) isInside = !isInside;
+  }
+  return isInside;
+};
+
 export default function MapScreen({ navigation }) {
-  const { user } = useContext(UserContext); // Get the username from context
-  const [sector, setSector] = useState(null);
+  const { user, sector, setSector } = useContext(UserContext); // Use UserContext to get user and sector data
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
+  const notificationIntervalRef = useRef(null);
+  const [wellDoneNotificationSent, setWellDoneNotificationSent] = useState(false); // Flag to track if "well done" notification has been sent
 
   useEffect(() => {
+    // Request notification permissions
+    const requestNotificationPermissions = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to send notifications not granted.');
+      }
+    };
+
+    requestNotificationPermissions();
+
     const fetchSector = async () => {
       try {
         const response = await axios.post('http://192.168.1.126:8000/check-redemption-status', { username: user.username });
@@ -49,25 +78,80 @@ export default function MapScreen({ navigation }) {
     };
 
     fetchSector();
-  }, []);
+  }, [user.username, setSector]);
 
   useEffect(() => {
-    (async () => {
+    let locationSubscription;
+
+    const startLocationTracking = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    })();
-  }, []);
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000, // Track location every 5 seconds
+          distanceInterval: 10, // Update every 10 meters
+        },
+        (newLocation) => {
+          setLocation({
+            latitude: newLocation.coords.latitude,
+            longitude: newLocation.coords.longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          });
+
+          // Check if user is inside or outside their assigned sector
+          if (sector) {
+            if (isPointInPolygon(newLocation.coords, SMUSectors[sector])) {
+              // If inside the sector and notification hasn't been sent
+              if (!wellDoneNotificationSent) {
+                Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: "Well done!",
+                    body: "You are in your assigned sector.",
+                    sound: true,
+                    vibrate: true,
+                  },
+                  trigger: null,
+                });
+                setWellDoneNotificationSent(true); // Mark the notification as sent
+              }
+            } else {
+              // If outside the sector
+              if (!notificationIntervalRef.current) {
+                notificationIntervalRef.current = setInterval(() => {
+                  Notifications.scheduleNotificationAsync({
+                    content: {
+                      title: "You are out of your assigned sector!",
+                      body: "Please return to your assigned sector immediately.",
+                      sound: true,
+                      vibrate: true,
+                    },
+                    trigger: null,
+                  });
+                }, 20000); // Every 20 seconds
+              }
+            }
+          }
+        }
+      );
+    };
+
+    startLocationTracking();
+
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove(); // Stop location tracking when the component unmounts
+      }
+      if (notificationIntervalRef.current) {
+        clearInterval(notificationIntervalRef.current);
+      }
+    };
+  }, [sector, wellDoneNotificationSent]);
 
   const goToLocation = (coords) => {
     mapRef.current.animateToRegion({
@@ -98,31 +182,25 @@ export default function MapScreen({ navigation }) {
             showsUserLocation={true}
             provider={MapView.PROVIDER_GOOGLE}  // Use Google Maps
           >
-            {/* Render SMU School of Economics Polygon */}
+            {/* Render the sectors */}
             <Polygon
               coordinates={SMUSectors.economics}
               fillColor="rgba(0, 200, 0, 0.5)" // semi-transparent green
               strokeColor="green"
               strokeWidth={2}
             />
-            
-            {/* Render SMU School of Business Polygon */}
             <Polygon
               coordinates={SMUSectors.business}
               fillColor="rgba(0, 0, 200, 0.5)" // semi-transparent blue
               strokeColor="blue"
               strokeWidth={2}
             />
-
-            {/* Render SMU PSR Polygon */}
             <Polygon
               coordinates={SMUSectors.psr}
               fillColor="rgba(200, 0, 200, 0.5)" // semi-transparent purple
               strokeColor="purple"
               strokeWidth={2}
             />
-            
-            {/* User Location Marker */}
             <Marker
               coordinate={location}
               title={"You are here"}
