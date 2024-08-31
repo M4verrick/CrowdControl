@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
+import axios from 'axios';
+import { UserContext } from './usercontext'; // Import UserContext to get the username
 
 const SMUSectors = {
   economics: [
@@ -24,10 +26,30 @@ const SMUSectors = {
   ],
 };
 
-export default function MapScreen() {
+export default function MapScreen({ navigation }) {
+  const { user } = useContext(UserContext); // Get the username from context
+  const [sector, setSector] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
+
+  useEffect(() => {
+    const fetchSector = async () => {
+      try {
+        const response = await axios.post('http://192.168.1.126:8000/check-redemption-status', { username: user.username });
+        if (response.data.sector) {
+          setSector(response.data.sector); // Set the sector from the backend response
+        } else {
+          setSector(null);
+        }
+      } catch (error) {
+        console.error('Error fetching sector:', error.message);
+        setSector(null);
+      }
+    };
+
+    fetchSector();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -64,6 +86,11 @@ export default function MapScreen() {
     <View style={styles.container}>
       {location ? (
         <>
+          {sector ? (
+            <Text style={styles.sectorText}>Assigned Sector: {sector}</Text>
+          ) : (
+            <Text style={styles.sectorText}>No sector assigned</Text>
+          )}
           <MapView
             ref={mapRef}
             style={styles.map}
@@ -131,5 +158,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '100%',
     backgroundColor: '#fff',
+  },
+  sectorText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
