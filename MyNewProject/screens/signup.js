@@ -8,9 +8,6 @@ const SignUpScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  // Fetch the API URL from environment variables
-  const API_URL = process.env.REACT_APP_API_URL;
-
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
@@ -18,7 +15,7 @@ const SignUpScreen = () => {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/signup`, { 
+      const response = await axios.post('http://192.168.1.126:8000/signup', { 
         username,
         password,
       });
