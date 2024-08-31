@@ -13,7 +13,7 @@ const SignUpScreen = () => {
       setMessage('Passwords do not match');
       return;
     }
-
+              //change ip below
     try {
       const response = await axios.post('http://192.168.1.126:8000/signup', { 
         username,

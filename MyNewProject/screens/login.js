@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
   const { setUser } = useContext(UserContext); // Use the context to set the user
 
   const handleLogin = async () => {
-    try {
+    try { //change ip below
       const response = await axios.post("http://192.168.1.126:8000/login", {
         username,
         password,

@@ -64,7 +64,7 @@ export default function MapScreen({ navigation }) {
     requestNotificationPermissions();
 
     const fetchSector = async () => {
-      try {
+      try {//change ip below
         const response = await axios.post('http://192.168.1.126:8000/check-redemption-status', { username: user.username });
         if (response.data.sector) {
           setSector(response.data.sector); // Set the sector from the backend response

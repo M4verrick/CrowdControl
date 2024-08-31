@@ -33,7 +33,7 @@ const TicketsScreen = ({ navigation }) => {
   // Check redemption status when the screen loads
   useEffect(() => {
     const checkRedemptionStatus = async () => {
-      try {
+      try { //change ip below   
         const response = await axios.post('http://192.168.1.126:8000/check-redemption-status', { username: user.username });
         if (response.data.sector) {
           setRedeemedTickets([...redeemedTickets, { id: tickets[0].id, venueId: tickets[0].venueId }]);
@@ -50,7 +50,7 @@ const TicketsScreen = ({ navigation }) => {
 
   const handleRedeem = async (id, venueId, event) => {
     try {
-      // Call the backend to redeem the ticket and get the assigned sector
+      // Call the backend to redeem the ticket and get the assigned sector   //change ip below
       const response = await axios.post('http://192.168.1.126:8000/redeem', { username: user.username }); // Use the actual username
       const assignedSector = response.data.sector;
 
