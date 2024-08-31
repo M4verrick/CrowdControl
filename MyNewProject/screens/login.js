@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   TextInput,
@@ -9,11 +9,14 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
+import { UserContext } from "../screens/usercontext"; // Import the UserContext
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  
+  const { setUser } = useContext(UserContext);  // Use the context to set the user
 
   const handleLogin = async () => {
     try {
@@ -21,8 +24,14 @@ const LoginScreen = ({ navigation }) => {
         username,
         password,
       });
-      setMessage('Login Successful');
-      navigation.navigate('Home');
+      
+      if (response.status === 200) {
+        setMessage('Login Successful');
+        setUser({ username });  // Store the username in context
+        navigation.navigate('Home');
+      } else {
+        setMessage('Invalid credentials');
+      }
     } catch (error) {
       setMessage('Error Logging In');
     }

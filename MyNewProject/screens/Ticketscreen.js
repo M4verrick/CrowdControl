@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,9 @@ import {
   Modal,
   Button,
 } from "react-native";
+import axios from "axios";
 import NavBar from "../components/navbar";
+import { UserContext } from "./usercontext";
 
 const TicketsScreen = ({ navigation }) => {
   const tickets = [
@@ -21,19 +23,45 @@ const TicketsScreen = ({ navigation }) => {
     },
   ];
 
+  const { user } = useContext(UserContext);  // Get the username from context
   const [redeemedTickets, setRedeemedTickets] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentVenue, setCurrentVenue] = useState(null);
   const [isTicketRedeemed, setIsTicketRedeemed] = useState(false);
+  const [assignedSector, setAssignedSector] = useState(null);  // Store the assigned sector
 
-  const handleRedeem = (id, venueId, event) => {
-    setRedeemedTickets([...redeemedTickets, { id, venueId }]);
-    setIsTicketRedeemed(true);  // Mark the ticket as redeemed
-    if (event === "SMU HALLOWEEN EVENT") {
-      navigation.navigate("Map", { venueId, event });
-    } else {
-      setCurrentVenue(venueId);
-      setModalVisible(true); // Show the map modal for other events (currently not used)
+  // Check redemption status when the screen loads
+  useEffect(() => {
+    const checkRedemptionStatus = async () => {
+      try {
+        const response = await axios.post('http://192.168.1.126:8000/check-redemption-status', { username: user.username });
+        if (response.data.sector) {
+          setRedeemedTickets([...redeemedTickets, { id: tickets[0].id, venueId: tickets[0].venueId }]);
+          setIsTicketRedeemed(true);
+          setAssignedSector(response.data.sector);
+        }
+      } catch (error) {
+        console.error('Error checking redemption status:', error.message);
+      }
+    };
+
+    checkRedemptionStatus();
+  }, []);
+
+  const handleRedeem = async (id, venueId, event) => {
+    try {
+      // Call the backend to redeem the ticket and get the assigned sector
+      const response = await axios.post('http://192.168.1.126:8000/redeem', { username: user.username }); // Use the actual username
+      const assignedSector = response.data.sector;
+
+      setRedeemedTickets([...redeemedTickets, { id, venueId }]);
+      setIsTicketRedeemed(true);  // Mark the ticket as redeemed
+      setAssignedSector(assignedSector); // Store the assigned sector
+
+      // Navigate to the map screen with the assigned sector
+      navigation.navigate("Map", { venueId, event, sector: assignedSector });
+    } catch (error) {
+      console.error('Error redeeming ticket:', error.message);
     }
   };
 
@@ -62,7 +90,7 @@ const TicketsScreen = ({ navigation }) => {
             >
               <Text style={styles.claimButtonText}>
                 {redeemedTickets.some((redeemed) => redeemed.id === ticket.id)
-                  ? "Redeemed"
+                  ? `Redeemed - Sector: ${assignedSector}`
                   : "Redeem"}
               </Text>
             </TouchableOpacity>
