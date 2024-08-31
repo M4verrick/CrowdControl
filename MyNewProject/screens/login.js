@@ -18,9 +18,12 @@ const LoginScreen = ({ navigation }) => {
 
   const { setUser } = useContext(UserContext); // Use the context to set the user
 
+  // Fetch the API URL from environment variables
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://192.168.1.126:8000/login", {
+      const response = await axios.post(`${API_URL}/login`, {
         username,
         password,
       });
